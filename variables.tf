@@ -1,63 +1,46 @@
-variable "application_name" {
-  description = "Nombre de la aplicación"
+variable "project_name" {
+  description = "The name of the project."
   type        = string
-  default     = "integradora"
+
+  validation {
+    condition     = length(var.project_name) >= 5 && length(var.project_name) <= 20
+    error_message = "The project name must not be empty."
+  }
 }
 
 variable "environment" {
-  description = "Entorno de despliegue (dev, staging, prod)"
+  description = "The environment for the deployment (e.g., dev, staging, prod)."
   type        = string
-  default     = "dev"
+
+  validation {
+    condition     = contains(["dev", "qa", "prod"], var.environment)
+    error_message = "The environment must be one of: dev, qa, prod."
+  }
 }
 
-variable "length" {
-  description = "Length of the random string"
-  type        = number
-  default     = 16
+variable "location" {
+  description = "The Azure region where resources will be deployed."
+  type        = string
+  default     = "mexicocentral"
 }
 
-
-# Otros tipos de variables pueden ser list, map, bool, etc.
-
-variable "enable_monitoring" {
-  description = "Habilitar o deshabilitar el monitoreo"
-  type        = bool
-  default     = true
-}
-
-variable "regions" {
-  description = "Lista de regiones donde se desplegará la infraestructura"
+variable "vnet_address_space" {
+  description = "The address space for the virtual network."
   type        = list(string)
-  default     = ["us-east-1", "us-west-2"]
+  default     = "10.0.0.0/16"
 }
 
-
-variable "environment_tags" {
-  description = "Etiquetas específicas para cada entorno"
+variable "tags" {
+  description = "A map of tags to assign to resources."
   type        = map(string)
-  default     = {
-    dev  = "Development"
-    prod = "Production"
-  }
-}
-
-variable "application_config" {
-  description = "Configuración específica de la aplicación"
-  type = object({
-    version      = string
-    maintainer   = string
-    dependencies = list(string)
-  })
   default = {
-    version      = "1.0.0"
-    maintainer   = "John Doe"
-    dependencies = ["dependency1", "dependency2"]
+    managed_by = "terraform"
   }
 }
 
-variable "allowed_networks" {
-  description = "Lista de redes permitidas para acceder a la aplicación"
-  type        = set(string)
-  default     = ["10.0.0.0/16", "10.1.0.0/16"]
+variable "subscription_id" {
+  description = "The Azure subscription ID."
+  type        = string
+  default     = "your-subscription-id"
+  sensitive   = true
 }
-

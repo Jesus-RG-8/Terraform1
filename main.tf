@@ -1,11 +1,15 @@
-# Las variables son valores de entrada que permiten parametrizar la infraestructura.
+resource "azurerm_resource_group" "rg" {
+  name     = local.resource_group_name
+  location = var.location
 
-resource "random_string" "suffix" {
-  length  = var.length
-  special = true
+  tags = local.common_tags
 }
 
-locals {
-  unique_name      = "${var.application_name}-${var.environment}-${random_string.suffix.result}"
-  application_name = var.application_name
+resource "azurerm_virtual_network" "vnet" {
+  name                = local.virtual_network_name
+  address_space       = var.vnet_address_space
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  tags = local.common_tags
 }
