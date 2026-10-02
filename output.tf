@@ -1,27 +1,19 @@
-output "application_name" {
-  value = random_string.suffix.result
+output "resource_group_name" {
+  value = azurerm_resource_group.rg.name
 }
 
-output "unique_name" {
-  value = local.unique_name
+output "resource_group_id" {
+  value = azurerm_resource_group.rg.id
 }
 
-output "enable_monitoring" {
-  value = var.enable_monitoring
+output "virtual_network_name" {
+  value = azurerm_virtual_network.vnet.name
 }
 
-output "regions" {
-  value = var.regions
+output "virtual_network_id" {
+  value = azurerm_virtual_network.vnet.id
 }
 
-output "environment_tags" {
-  value = var.environment_tags
-}
-
-output "application_config" {
-  value = var.application_config
-}
-
-output "allowed_networks" {
-  value = var.allowed_networks
+output "virtual_network_address_space" {
+  value = azurerm_virtual_network.vnet.address_space
 }
